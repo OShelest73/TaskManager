@@ -1,0 +1,57 @@
+﻿@model TaskModel
+
+@{
+    ViewData["Title"] = "Task details";
+}
+
+<div class="row justify-content-center detail-form">
+    <div class="col-xl-8 col-lg-10 form-layout">
+        @if (Model is not null)
+        {
+            <div class="row task-detail-row">
+                <div class="col-11 task-detail">
+                    <div class="task-detail-text">
+                        <div>Creation date: @Model.CreatedDate.ToLocalTime().ToString("HH:mm dd.MM.yyyy")</div>
+                        <div>Finish date: @Model.FinishDate.ToLocalTime().ToString("HH:mm dd.MM.yyyy")</div>
+                        <div class="fw-bold mb-2 task-detail-task">Task: @Model.TaskName</div>
+                        <div class="mb-2 task-detail-author">Author: @Model.Author.FullName - @Model.Author.EmailAddress</div>
+                        <div class="mb-2">@Model.Description</div>
+                        <div class="mb-2">
+                            Appointed users:
+                            @if (ViewBag.AppointedUsers?.Count > 0)
+                            {
+                                @foreach (var u in ViewBag.AppointedUsers)
+                                {
+                                    <div>
+                                        > @u.FullName - @u.EmailAddress
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div>
+                                    No appointed users
+                                </div>
+                            }
+                        </div>
+                        <div class="task-entry-text-category">
+                            <div>@Model.Category.CategoryName</div>
+                        </div>
+                        <div>
+                            @Model.Notes
+                        </div>
+
+                        @if (ViewBag.Role == "Manager")
+                        {
+                            <div>
+                                <a class="btn btn-main text-uppercase" asp-route-id="@Model.Id" asp-action="Delete">Delete task</a>
+                                <a class="btn btn-main text-uppercase" asp-route-id="@Model.Id" asp-action="Edit">Edit task</a>
+                                <a class="btn btn-main text-uppercase" asp-route-id="@Model.Id" asp-action="AppointUsers">Appoint users</a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

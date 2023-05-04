@@ -1,0 +1,10 @@
+﻿@model UserModel
+
+@{
+    ViewData["Title"] = "Подтверждение действия";
+}
+
+<div>
+    <p>Вы действительно хотите удалить пользователя @Model.FullName ? Это действие будет невозможно отменить.</p>
+    <a asp-action="Delete" asp-route-id="@Model.EmailAddress">Да, я хочу удалить данного пользователя</a>
+</div>

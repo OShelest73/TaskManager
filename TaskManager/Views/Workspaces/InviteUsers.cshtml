@@ -1,0 +1,60 @@
+﻿@model IEnumerable<UserModel>
+
+@{
+    ViewData["Title"] = "Invite user";
+}
+
+<div class="row">
+    <form class="form-check-inline my-2 my-lg-0" style="display: flex;">
+        <input name="searchString" type="text" class="form-control" placeholder="Найти по ФИО или Email адресу"/>
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="bi bi-search"></i></button>
+    </form>
+    <div class="categories">
+        <span class="text-uppercase fw-bold">Category</span>
+
+        @Html.ActionLink("Reset filter", "InviteUsers")
+                    
+        @foreach (var category in ViewBag.Categories)
+        {
+            @Html.ActionLink($"{category.CategoryName}", "InviteUsers", new{categoryId = category.Id})
+        }
+    </div>
+    @if (Model != null)
+    {
+        <div class="col-md-8 offset-md-2">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.EmailAddress)</th>
+                        <th>@Html.DisplayNameFor(model => model.FullName)</th>
+                        <th>@Html.DisplayNameFor(model => model.Category.CategoryName)</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="align-middle">
+                                @Html.DisplayFor(modelItem => item.EmailAddress)
+                            </td>
+                            <td class="align-middle">
+                                @Html.DisplayFor(modelItem => item.FullName)
+                            </td>
+                            <td class="align-middle">
+                                @Html.DisplayFor(modelItem => item.Category.CategoryName)
+                            </td>
+                            <td class="align-middle">
+                                <a class="btn btn-outline-primary" asp-action="InviteUser" asp-route-id="@item.EmailAddress"><i class="bi bi-pencil-square"></i>Invite </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div>Нет подходящих пользователей</div>
+    }
+</div>

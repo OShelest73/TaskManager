@@ -1,0 +1,19 @@
+﻿@model TaskManager.ViewModels.AppointViewModel
+
+@{
+    ViewData["Title"] = "Appoint users";
+}
+
+@if(Model.allUsers != null)
+{
+    <form asp-action="AppointUsers">
+        <div class="form-group">
+            @Html.ListBoxFor(m => m.selectList, ViewBag.UsersId as MultiSelectList)
+        </div>
+        <input type="submit" value="Edit appointed users" class="btn btn-primary"/>
+    </form>
+}
+else
+{
+    <div>Для данного задания нет подходящих пользователей</div>
+}
