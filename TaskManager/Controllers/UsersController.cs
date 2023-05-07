@@ -11,17 +11,20 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace TaskManager.Controllers;
 public class UsersController : Controller
 {
     private readonly IUsersService _usersService;
+    private readonly ITasksService _tasksService;
     private readonly ICategoriesService _categoriesService;
 
-    public UsersController(IUsersService usersService, ICategoriesService categoriesService)
+    public UsersController(IUsersService usersService, ICategoriesService categoriesService, ITasksService tasksService)
     {
         _usersService = usersService;
         _categoriesService = categoriesService;
+        _tasksService = tasksService;
     }
 
     [HttpGet]
@@ -96,19 +99,53 @@ public class UsersController : Controller
             return View("NotFound");
         }
 
+        if (userDetails.TaskId.Value != null)
+        {
+            var appointedTask = await _tasksService.FindTask(userDetails.TaskId.Value);
+            ViewBag.Task = appointedTask;
+        }
+
         return View(userDetails);
     }
 
     public async Task<IActionResult> Edit(string id)
     {
-        var userDetails = await _usersService.GetByEmail(id);
-
-        if (userDetails == null)
+        if (id == null)
         {
-            return View("NotFound");
+            return NotFound();
         }
 
-        return View(userDetails);
+        var categories = await _categoriesService.GetAll();
+        SelectList selectCategories = new SelectList(categories, "Id", "CategoryName");
+        ViewBag.Categories = selectCategories;
+        var user = await _usersService.GetByEmail(id);
+
+        UserViewModel viewUser = ConvertToViewModel(user);
+
+        return View(viewUser);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(string id, UserViewModel user)
+    {
+        var correctUser = await _usersService.GetByEmail(id);
+
+        if (!ModelState.IsValid)
+        {
+            var categories = await _categoriesService.GetAll();
+            SelectList selectCategories = new SelectList(categories, "Id", "CategoryName");
+            ViewBag.Categories = selectCategories;
+
+            UserViewModel viewUser = ConvertToViewModel(correctUser);
+
+            return View(viewUser);
+        }
+
+        ConvertFromViewModel(user, correctUser);
+
+        await _usersService.Update(correctUser);
+        return RedirectToAction("Index");
     }
 
     public async Task<IActionResult> DeleteConfirm(string id)
@@ -124,17 +161,6 @@ public class UsersController : Controller
         await _usersService.DeleteUser(user);
 
         return RedirectToAction("Index");
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> Edit(int id, [Bind($"Id, EmailAddress, FullName, Category")] UserModel user)
-    {
-        if (!ModelState.IsValid)
-        {
-            return View(user);
-        }
-        await _usersService.Update(user);
-        return RedirectToAction(nameof(Index));
     }
 
     private async Task Authenticate(string emailAddress, string category)
@@ -182,5 +208,30 @@ public class UsersController : Controller
         rng.GetNonZeroBytes(saltBytes);
 
         return saltBytes;
+    }
+
+    private UserModel ConvertFromViewModel(UserModel userViewModel)
+    {
+        UserModel user = new();
+
+        user.FullName = userViewModel.FullName;
+
+        return user;
+    }
+
+    private UserViewModel ConvertToViewModel(UserModel userModel)
+    {
+        UserViewModel viewUser = new();
+
+        viewUser.EmailAddress = userModel.EmailAddress;
+        viewUser.FullName = userModel.FullName;
+        viewUser.Category = userModel.Category.Id;
+
+        return viewUser;
+    }
+
+    private void ConvertFromViewModel(UserViewModel userViewModel, UserModel user)
+    {
+        user.FullName = userViewModel.FullName;
     }
 }

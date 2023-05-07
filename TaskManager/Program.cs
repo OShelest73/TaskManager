@@ -33,11 +33,14 @@ namespace TaskManager
             app.UseAuthorization();
 
             app.MapControllerRoute(
-                name: "management",
+                name: "taskManagement",
                 pattern: "/{controller}/{workspace}/{action}/{id}");
             app.MapControllerRoute(
                 name: "create",
                 pattern: "/{controller}/{workspace}/{action}");
+            app.MapControllerRoute(
+                name: "userManagement",
+                pattern: "{controller=Users}/{action=Index}/{id}");
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Users}/{action=Index}/{id?}");

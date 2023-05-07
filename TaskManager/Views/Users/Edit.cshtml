@@ -1,4 +1,4 @@
-﻿@model UserModel
+﻿@model TaskManager.ViewModels.UserViewModel
 
 @{
     ViewData["Title"] = "Update user";
@@ -11,37 +11,21 @@
         </p>
         <div class="row text">
             <div class="col-md-8 offset-2">
-                <form asp-action="Register">
+                <form asp-action="Edit">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                     <div class="form-group">
-                        <label asp-for="TaskName" class="control-label"></label>
-                        <input asp-for="TaskName" class="form-control"/>
-                        <span asp-validation-for="TaskName" class="text-danger"></span>
+                        Editing: @Model.EmailAddress
                     </div>
                     <div class="form-group">
-                        <label asp-for="Description" class="control-label"></label>
-                        <input asp-for="Description" class="form-control"/>
-                        <span asp-validation-for="Description" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Notes" class="control-label"></label>
-                        <input asp-for="Notes" class="form-control"/>
-                        <span asp-validation-for="Notes" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="FinishDate" class="control-label"></label>
-                        <input asp-for="FinishDate" type="datetime-local" class="form-control"/>
-                        <span asp-validation-for="FinishDate" class="text-danger"></span>
+                        <label asp-for="FullName" class="control-label"></label>
+                        <input asp-for="FullName" class="form-control"/>
+                        <span asp-validation-for="FullName" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         @Html.DropDownListFor(m => m.Category, ViewBag.Categories as SelectList)
                         <span asp-validation-for="Category" class="text-danger"></span>
                     </div>
-                    <div class="form-group">
-                        @Html.DropDownListFor(m => m.Status, ViewBag.Statuses as SelectList)
-                        <span asp-validation-for="Status" class="text-danger"></span>
-                    </div>   
                     
                     <div class="form-group">
                         <input type="submit" asp-action="Edit" value="Edit" class="btn btn-outline-success float-right"/>
