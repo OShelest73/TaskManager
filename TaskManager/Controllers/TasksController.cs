@@ -84,6 +84,15 @@ public class TasksController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(TaskViewModel task)
     {
+        TaskModel createdTask = ConvertFromViewModel(task);
+        TimeSpan difference = TimeSpan.FromMinutes(5);
+
+        if (createdTask.FinishDate.Subtract(createdTask.CreatedDate) < difference)
+        {
+            ModelState.AddModelError(string.Empty, 
+                "Промежуток между датой и временем создания и датой и временем завершения слишком мал (должен быть не менее 5 минут). Пожалуйста, задайте корректные дату и время завершения задания");
+        }
+
         if (!ModelState.IsValid)
         {
             var categories = await _categoriesService.GetAll();
@@ -94,8 +103,6 @@ public class TasksController : Controller
             ViewBag.Statuses = selectStatuses;
             return View();
         }
-        
-        TaskModel createdTask = ConvertFromViewModel(task);
 
         createdTask.Category = await _categoriesService.GetById(task.Category);
         createdTask.Status = await _statusesService.GetById(task.Status);
@@ -143,12 +150,20 @@ public class TasksController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int? id, TaskViewModel task)
     {
+        var correctTask = await _tasksService.FindTask(id.Value);
+
+        TimeSpan difference = TimeSpan.FromMinutes(5);
+
+        if (task.FinishDate.Subtract(correctTask.CreatedDate) < difference)
+        {
+            ModelState.AddModelError(string.Empty,
+                "Промежуток между датой и временем создания и датой и временем завершения слишком мал (должен быть не менее 5 минут). Пожалуйста, задайте корректные дату и время завершения задания");
+        }
+
         if (id != task.Id)
         {
             return NotFound();
         }
-
-        var correctTask = await _tasksService.FindTask(id.Value);
 
         if (!ModelState.IsValid)
         {
