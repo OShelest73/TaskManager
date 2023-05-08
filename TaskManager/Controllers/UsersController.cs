@@ -87,7 +87,42 @@ public class UsersController : Controller
         passedUser.Salt = Convert.ToBase64String(salt);
 
         await _usersService.Add(passedUser);
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction("Index");
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Edit(string id)
+    {
+        var user = await _usersService.GetByEmail(id);
+        var categories = await _categoriesService.GetAll();
+        SelectList selectCategories = new SelectList(categories, "Id", "CategoryName");
+        ViewBag.Categories = selectCategories;
+
+        var viewUser = ConvertToViewModel(user);
+
+        return View(viewUser);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(string id, UserViewModel user)
+    {
+        ModelState.Remove("EmailAddress");
+        if (!ModelState.IsValid)
+        {
+            var categories = await _categoriesService.GetAll();
+            SelectList selectCategories = new SelectList(categories, "Id", "CategoryName");
+            ViewBag.Categories = selectCategories;
+            return View();
+        }
+
+        var passedUser = await _usersService.GetByEmail(id);
+
+        passedUser.FullName = user.FullName;
+        passedUser.Category = await _categoriesService.GetById(user.Category);
+
+        await _usersService.Update(passedUser);
+        return RedirectToAction("Index");
     }
 
     public async Task<IActionResult> Details(string id)
@@ -99,7 +134,7 @@ public class UsersController : Controller
             return View("NotFound");
         }
 
-        if (userDetails.TaskId.Value != null)
+        if (userDetails.TaskId != null)
         {
             var appointedTask = await _tasksService.FindTask(userDetails.TaskId.Value);
             ViewBag.Task = appointedTask;
@@ -108,44 +143,13 @@ public class UsersController : Controller
         return View(userDetails);
     }
 
-    public async Task<IActionResult> Edit(string id)
+    public async Task<IActionResult> Profile(string id)
     {
-        if (id == null)
-        {
-            return NotFound();
-        }
-
-        var categories = await _categoriesService.GetAll();
-        SelectList selectCategories = new SelectList(categories, "Id", "CategoryName");
-        ViewBag.Categories = selectCategories;
         var user = await _usersService.GetByEmail(id);
-
-        UserViewModel viewUser = ConvertToViewModel(user);
-
-        return View(viewUser);
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(string id, UserViewModel user)
-    {
-        var correctUser = await _usersService.GetByEmail(id);
-
-        if (!ModelState.IsValid)
-        {
-            var categories = await _categoriesService.GetAll();
-            SelectList selectCategories = new SelectList(categories, "Id", "CategoryName");
-            ViewBag.Categories = selectCategories;
-
-            UserViewModel viewUser = ConvertToViewModel(correctUser);
-
-            return View(viewUser);
-        }
-
-        ConvertFromViewModel(user, correctUser);
-
-        await _usersService.Update(correctUser);
-        return RedirectToAction("Index");
+        var workspaces = await _usersService.GetUsersWorkspaces(id);
+        ViewBag.Workspaces = workspaces;
+        
+        return View(user);
     }
 
     public async Task<IActionResult> DeleteConfirm(string id)
@@ -210,15 +214,6 @@ public class UsersController : Controller
         return saltBytes;
     }
 
-    private UserModel ConvertFromViewModel(UserModel userViewModel)
-    {
-        UserModel user = new();
-
-        user.FullName = userViewModel.FullName;
-
-        return user;
-    }
-
     private UserViewModel ConvertToViewModel(UserModel userModel)
     {
         UserViewModel viewUser = new();
@@ -228,10 +223,5 @@ public class UsersController : Controller
         viewUser.Category = userModel.Category.Id;
 
         return viewUser;
-    }
-
-    private void ConvertFromViewModel(UserViewModel userViewModel, UserModel user)
-    {
-        user.FullName = userViewModel.FullName;
     }
 }

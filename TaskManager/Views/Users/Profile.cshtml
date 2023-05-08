@@ -1,0 +1,57 @@
+﻿@model UserModel
+
+@{
+    ViewData["Title"] = "Профиль";
+}
+
+<div class="row justify-content-center detail-form">
+    <div class="col-xl-8 col-lg-10 form-layout">
+        @if (Model is not null && Model.EmailAddress == User.Identity.Name)
+        {
+            <div class="row task-detail-row">
+                <div class="col-11 task-detail">
+                    <div class="task-detail-text">
+                        <div>ФИО: @Model.FullName</div>
+                        <div>Email адрес: @Model.EmailAddress</div>
+                        <div class="fw-bold mb-2 task-detail-task">Компетенция: @Model.Category.CategoryName</div>
+                        <div class="mb-2">
+                            Рабочие области:
+                            @if (ViewBag.Workspaces?.Count > 0)
+                            {
+                                @foreach (var w in ViewBag.Workspaces)
+                                {
+                                    <div>
+                                        > <a asp-controller="Tasks" asp-action="Index" asp-route-workspace="@w.Id">@w.WorkspaceName</a>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div>
+                                    No appointed users
+                                </div>
+                            }
+                        </div>
+                        <div>Назначенное задание:</div>
+                        @if (ViewBag.Task != null)
+                        {
+                            <div>Creation date: @ViewBag.Task.CreatedDate.ToLocalTime().ToString("HH:mm dd.MM.yyyy")</div>
+                            <div>Finish date: @ViewBag.Task.FinishDate.ToLocalTime().ToString("HH:mm dd.MM.yyyy")</div>
+                            <div class="fw-bold mb-2 task-detail-task">Task: @ViewBag.Task.TaskName</div>
+                            <div class="mb-2 task-detail-author">Author: @ViewBag.Task.Author.FullName - @ViewBag.Task.Author.EmailAddress</div>
+                            <div class="mb-2">Description: @ViewBag.Task.Description</div>
+                        }
+                        else
+                        {
+                            <div>У этого пользователя нет назначенных заданий</div>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <p>Ошибка доступа. Возможные проблемы: пользователь не найден, у вас отсутствуют права для просмотра его профиля</p>
+        }
+    </div>
+</div>

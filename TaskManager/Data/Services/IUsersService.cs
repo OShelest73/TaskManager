@@ -11,10 +11,11 @@ public interface IUsersService
     void Delete(int id);
     Task<UserModel> LogIn(string emailAddress, string password);
     Task<IEnumerable<UserModel>> GetAppointedUsers(int taskId);
-    Task<IEnumerable<UserModel>> GetUsersToAppoint(CategoryModel category);
+    Task<IEnumerable<UserModel>> GetUsersToAppoint(CategoryModel category, WorkspaceModel workspace);
     Task AppointUser(UserModel user, int taskId);
-    Task DeleteTaskFromUser(int taskId);
+    Task DeleteTaskFromAppointedUsers(int taskId);
     Task<IEnumerable<UserModel>> GetUsersToInvite(IEnumerable<UserModel> invitedUsers);
     Task<IEnumerable<WorkspaceModel>> GetUsersWorkspaces(string userId);
     Task DeleteUser(UserModel user);
+    Task DeleteTaskFromUsers(int taskId);
 }

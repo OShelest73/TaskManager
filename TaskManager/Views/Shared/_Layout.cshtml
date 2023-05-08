@@ -20,21 +20,21 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="navbar-nav flex-grow-1">
-                            <a class="nav-link text-dark" asp-controller="Workspaces" asp-action="Index"> <i class=""></i>Workspaces</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" id="navbarDropdown" role="button" data-toggle="button"
-                                aria-haspopup="true" aria-expanded="false">
-                                <i class="bi bi-gear"></i> Management
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="">
-                                <a class="dropdown-item" asp-controller="Users" asp-action="Index"><i class="">Users</i></></a>
-                                <a class="dropdown-item" asp-controller="Workspaces" asp-action="Index"><i class="">Workspaces</i></></a>
-                            </div>
-                        </li>
                         @if (User.Identity.IsAuthenticated)
                         {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" id="navbarDropdown" role="button" data-toggle="button"
+                                aria-haspopup="true" aria-expanded="false">
+                                    <i class="bi bi-gear"></i> Management
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="">
+                                    <a class="dropdown-item" asp-controller="Users" asp-action="Index">Users</a>
+                                    <a class="dropdown-item" asp-controller="Workspaces" asp-action="Index">Workspaces</a>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="nav-link text-dark" asp-controller="Users" asp-route-id="@User.Identity.Name" asp-action="Profile">Profile</a>
+                            </li>
                             <li>
                                 <a class="nav-link text-dark" asp-controller="Users" asp-action="Logout">Logout</a>
                             </li>

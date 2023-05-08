@@ -17,11 +17,15 @@
 
                         @if (ViewBag.Task != null)
                         {
-                            <div>Creation date: ViewBag.Task.CreatedDate.ToLocalTime().ToString("HH:mm dd.MM.yyyy")</div>
-                            <div>Finish date: ViewBag.Task.FinishDate.ToLocalTime().ToString("HH:mm dd.MM.yyyy")</div>
-                            <div class="fw-bold mb-2 task-detail-task">Task: ViewBag.Task.TaskName</div>
-                            <div class="mb-2 task-detail-author">Author: ViewBag.Task.Author.FullName - ViewBag.Task.Author.EmailAddress</div>
-                            <div class="mb-2">Viewbag.Task.Description</div>
+                            <div>Creation date: @ViewBag.Task.CreatedDate.ToLocalTime().ToString("HH:mm dd.MM.yyyy")</div>
+                            <div>Finish date: @ViewBag.Task.FinishDate.ToLocalTime().ToString("HH:mm dd.MM.yyyy")</div>
+                            <div class="fw-bold mb-2 task-detail-task">Task: @ViewBag.Task.TaskName</div>
+                            <div class="mb-2 task-detail-author">Author: @ViewBag.Task.Author.FullName - @ViewBag.Task.Author.EmailAddress</div>
+                            <div class="mb-2">Description: @ViewBag.Task.Description</div>
+                        }
+                        else
+                        {
+                            <div>У этого пользователя нет назначенных заданий</div>
                         }
                         <a class="btn btn-main text-uppercase" asp-action="Index">Show all</a>
                     </div>

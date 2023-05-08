@@ -51,4 +51,10 @@ public class WorkspaceService : IWorkspacesService
         workspace.Users.Remove(user);
         await _dbContext.SaveChangesAsync();
     }
+
+    public async Task DeleteWorkspace(WorkspaceModel workspace)
+    {
+        _dbContext.Remove(workspace);
+        await _dbContext.SaveChangesAsync();
+    }
 }

@@ -50,9 +50,9 @@ public class UsersService : IUsersService
         return user.Workspaces;
     }
 
-    public async Task<IEnumerable<UserModel>> GetUsersToAppoint(CategoryModel category)
+    public async Task<IEnumerable<UserModel>> GetUsersToAppoint(CategoryModel category, WorkspaceModel workspace)
     {
-        var result = await _dbContext.Users.Where(u => u.Category == category && u.TaskId == null).ToListAsync();
+        var result = await _dbContext.Users.Where(u => u.Category == category && u.Workspaces.Contains(workspace) && u.TaskId == null).ToListAsync();
         return result;
     }
 
@@ -78,9 +78,19 @@ public class UsersService : IUsersService
         }
     }
     
-    public async Task DeleteTaskFromUser(int taskId)
+    public async Task DeleteTaskFromAppointedUsers(int taskId)
     {
         var users = await GetAppointedUsers(taskId);
+        foreach (var user in users)
+        {
+            user.TaskId = null;
+            await Update(user);
+        }
+    }
+
+    public async Task DeleteTaskFromUsers(int taskId)
+    {
+        var users = await _dbContext.Users.Where(u => u.TaskId == taskId).ToListAsync();
         foreach (var user in users)
         {
             user.TaskId = null;

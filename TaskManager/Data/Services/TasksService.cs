@@ -27,7 +27,7 @@ public class TasksService : ITasksService
 
     public async Task<TaskModel> FindTask(int id)
     {
-        var result = await _dbContext.Tasks.Include(t => t.Category).Include(t => t.Status).Include(t => t.Author).FirstOrDefaultAsync(t => t.Id == id);
+        var result = await _dbContext.Tasks.Include(t => t.Category).Include(t => t.Status).Include(t => t.Author).Include(t => t.Workspace).FirstOrDefaultAsync(t => t.Id == id);
         return result;
     }
 

@@ -12,13 +12,15 @@ public class WorkspacesController : Controller
 {
     private readonly IWorkspacesService _workspacesService;
     private readonly IUsersService _usersService;
+    private readonly ITasksService _tasksService;
     private readonly ICategoriesService _categoriesService;
 
-    public WorkspacesController(IWorkspacesService workspacesService, IUsersService usersService, ICategoriesService categoriesService)
+    public WorkspacesController(IWorkspacesService workspacesService, IUsersService usersService, ICategoriesService categoriesService, ITasksService tasksService)
     {
         _workspacesService = workspacesService;
         _usersService = usersService;
         _categoriesService = categoriesService;
+        _tasksService = tasksService;
     }
 
     [Authorize]
@@ -122,5 +124,27 @@ public class WorkspacesController : Controller
         }
 
         return RedirectToAction("RemoveUsers");
+    }
+
+    public async Task<IActionResult> DeleteConfirm(int id)
+    {
+        var workspace = await _workspacesService.FindWorkspace(id);
+        return View(workspace);
+    }
+
+    public async Task<IActionResult> Delete(int id)
+    {
+        var workspace = await _workspacesService.FindWorkspace(id);
+
+        var workspaceTasks = await _tasksService.GetWorkspaceTasks(id);
+
+        foreach (var task in workspaceTasks)
+        {
+            await _usersService.DeleteTaskFromUsers(task.Id);
+        }
+
+        await _workspacesService.DeleteWorkspace(workspace);
+
+        return RedirectToAction("Index");
     }
 }

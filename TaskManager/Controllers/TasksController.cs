@@ -113,7 +113,7 @@ public class TasksController : Controller
     {
         int taskId = Convert.ToInt32(HttpContext.GetRouteValue("Id"));
 
-        await _usersService.DeleteTaskFromUser(taskId);
+        await _usersService.DeleteTaskFromAppointedUsers(taskId);
         await _tasksService.Delete(taskId);
         return RedirectToAction("Index");
     }
@@ -174,7 +174,7 @@ public class TasksController : Controller
     {
         var task = await _tasksService.FindTask(id);
         AppointViewModel usersList = new();
-        usersList.usersList = await _usersService.GetUsersToAppoint(task.Category);
+        usersList.usersList = await _usersService.GetUsersToAppoint(task.Category, task.Workspace);
         IEnumerable<UserModel> appointedUsers = await _usersService.GetAppointedUsers(task.Id);
         if (appointedUsers == null)
         {
@@ -197,7 +197,7 @@ public class TasksController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> AppointUsers(int id, IEnumerable<string> selectList)
     {
-        await _usersService.DeleteTaskFromUser(id);
+        await _usersService.DeleteTaskFromAppointedUsers(id);
         foreach (var userId in selectList)
         {
             var user = await _usersService.GetByEmail(userId.ToString());

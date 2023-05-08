@@ -64,12 +64,20 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlcnNcTG9nSW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/c\#_proj/TaskManager/TaskManager/Views/Users/Profile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlcnNcUHJvZmlsZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/c\#_proj/TaskManager/TaskManager/Views/Users/Register.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlcnNcUmVnaXN0ZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/c\#_proj/TaskManager/TaskManager/Views/Workspaces/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV29ya3NwYWNlc1xDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/c\#_proj/TaskManager/TaskManager/Views/Workspaces/DeleteConfirm.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV29ya3NwYWNlc1xEZWxldGVDb25maXJtLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/c\#_proj/TaskManager/TaskManager/Views/Workspaces/Index.cshtml]
