@@ -17,8 +17,13 @@ public class AppDBContext: DbContext
             .HasMany(w => w.Users)
             .WithMany(w => w.Workspaces)
             .UsingEntity("Workspaces_Users",
-                l => l.HasOne(typeof(UserModel)).WithMany().HasForeignKey("EmailAddress"),
+                l => l.HasOne(typeof(UserModel)).WithMany().HasForeignKey("EmailAddresses"),
                 r => r.HasOne(typeof(WorkspaceModel)).WithMany().HasForeignKey("WorkspaceId"));
+        modelBuilder.Entity<UserModel>()
+            .HasOne(e => e.Task)
+            .WithMany(e => e.AppointedUsers)
+            .HasForeignKey(e => e.TaskId)
+            .IsRequired(false);
 
         base.OnModelCreating(modelBuilder);
     }

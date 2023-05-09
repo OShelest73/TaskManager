@@ -9,4 +9,6 @@ public interface ITasksService
     Task Update(TaskModel newTask);
     Task<TaskModel> FindTask(int id);
     Task Delete(int id);
+    Task<TaskModel> FindTaskWithUsers(int id);
+    Task AppointUsers(int taskId, List<UserModel> usersList);
 }

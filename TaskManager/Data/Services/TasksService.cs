@@ -27,8 +27,23 @@ public class TasksService : ITasksService
 
     public async Task<TaskModel> FindTask(int id)
     {
-        var result = await _dbContext.Tasks.Include(t => t.Category).Include(t => t.Status).Include(t => t.Author).Include(t => t.Workspace).FirstOrDefaultAsync(t => t.Id == id);
+        var result = await _dbContext.Tasks.Include(t => t.Category).Include(t => t.Status)
+            .Include(t => t.Author).Include(t => t.Workspace).FirstOrDefaultAsync(t => t.Id == id);
         return result;
+    }
+
+    public async Task<TaskModel> FindTaskWithUsers(int id)
+    {
+        var result = await _dbContext.Tasks.Include(t => t.Category).Include(t => t.Status)
+            .Include(t => t.Author).Include(t => t.Workspace).Include(t => t.AppointedUsers).FirstOrDefaultAsync(t => t.Id == id);
+        return result;
+    }
+
+    public async Task AppointUsers(int taskId, List<UserModel> usersList)
+    {
+        var task = await FindTaskWithUsers(taskId);
+        task.AppointedUsers = usersList;
+        await _dbContext.SaveChangesAsync();
     }
 
     public async Task Update(TaskModel newTask)

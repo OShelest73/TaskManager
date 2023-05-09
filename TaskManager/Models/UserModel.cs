@@ -14,4 +14,7 @@ public class UserModel
     public virtual List<WorkspaceModel> Workspaces { get; set; } = new();
 
     public int? TaskId { get; set; }
+    public TaskModel Task { get; set; }
+
+    public virtual List<TaskModel> Tasks { get; set;} = new();
 }

@@ -63,9 +63,8 @@ public class TasksController : Controller
         var user = await _usersService.GetByEmail(User.Identity.Name);
         ViewBag.Workspace = workspace;
         ViewBag.Role = user.Category.CategoryName;
-        var task = await _tasksService.FindTask(id);
-        var appointedUsers = await _usersService.GetAppointedUsers(task.Id);
-        ViewBag.AppointedUsers = appointedUsers;
+        var task = await _tasksService.FindTaskWithUsers(id);
+        ViewBag.AppointedUsers = task.AppointedUsers;
         return View(task);
     }
 
@@ -84,7 +83,7 @@ public class TasksController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(TaskViewModel task)
     {
-        TaskModel createdTask = ConvertFromViewModel(task);
+        TaskModel createdTask = await ConvertFromViewModel(task);
         TimeSpan difference = TimeSpan.FromMinutes(5);
 
         if (createdTask.FinishDate.Subtract(createdTask.CreatedDate) < difference)
@@ -120,7 +119,6 @@ public class TasksController : Controller
     {
         int taskId = Convert.ToInt32(HttpContext.GetRouteValue("Id"));
 
-        await _usersService.DeleteTaskFromAppointedUsers(taskId);
         await _tasksService.Delete(taskId);
         return RedirectToAction("Index");
     }
@@ -154,7 +152,7 @@ public class TasksController : Controller
 
         TimeSpan difference = TimeSpan.FromMinutes(5);
 
-        if (task.FinishDate.Subtract(correctTask.CreatedDate) < difference)
+        if (task.FinishDate.Subtract(correctTask.CreatedDate.ToLocalTime()) < difference)
         {
             ModelState.AddModelError(string.Empty,
                 "Промежуток между датой и временем создания и датой и временем завершения слишком мал (должен быть не менее 5 минут). Пожалуйста, задайте корректные дату и время завершения задания");
@@ -179,7 +177,7 @@ public class TasksController : Controller
             return View(viewTask);
         }
 
-        ConvertFromViewModel(task, correctTask);
+        await ConvertFromViewModel(task, correctTask);
 
         await _tasksService.Update(correctTask);
         return RedirectToAction("Details", new{id = id});
@@ -187,10 +185,10 @@ public class TasksController : Controller
 
     public async Task<IActionResult> AppointUsers(int id)
     {
-        var task = await _tasksService.FindTask(id);
+        var task = await _tasksService.FindTaskWithUsers(id);
         AppointViewModel usersList = new();
         usersList.usersList = await _usersService.GetUsersToAppoint(task.Category, task.Workspace);
-        IEnumerable<UserModel> appointedUsers = await _usersService.GetAppointedUsers(task.Id);
+        IEnumerable<UserModel> appointedUsers = task.AppointedUsers;
         if (appointedUsers == null)
         {
             usersList.allUsers = usersList.usersList;
@@ -212,17 +210,20 @@ public class TasksController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> AppointUsers(int id, IEnumerable<string> selectList)
     {
-        await _usersService.DeleteTaskFromAppointedUsers(id);
+        List<UserModel> usersList = new();
+
         foreach (var userId in selectList)
         {
             var user = await _usersService.GetByEmail(userId.ToString());
-            await _usersService.AppointUser(user, id);
+            usersList.Add(user);
         }
+
+        await _tasksService.AppointUsers(id, usersList);
 
         return RedirectToAction("Details", new { id = id });
     }
 
-    private TaskModel ConvertFromViewModel(TaskViewModel taskViewModel)
+    private async Task<TaskModel> ConvertFromViewModel(TaskViewModel taskViewModel)
     {
         TaskModel task = new TaskModel();
 
@@ -230,16 +231,20 @@ public class TasksController : Controller
         task.Description = taskViewModel.Description;
         task.Notes = taskViewModel.Notes;
         task.FinishDate = taskViewModel.FinishDate.ToUniversalTime();
+        task.Category = await _categoriesService.GetById(taskViewModel.Category);
+        task.Status = await _statusesService.GetById(taskViewModel.Status);
 
         return task;
     }
 
-    private void ConvertFromViewModel(TaskViewModel taskViewModel, TaskModel task)
+    private async Task ConvertFromViewModel(TaskViewModel taskViewModel, TaskModel task)
     {
         task.TaskName = taskViewModel.TaskName;
         task.Description = taskViewModel.Description;
         task.Notes = taskViewModel.Notes;
         task.FinishDate = taskViewModel.FinishDate.ToUniversalTime();
+        task.Category = await _categoriesService.GetById(taskViewModel.Category);
+        task.Status = await _statusesService.GetById(taskViewModel.Status);
     }
 
     private TaskViewModel ConvertToViewModel(TaskModel taskModel)
@@ -249,7 +254,7 @@ public class TasksController : Controller
         viewTask.TaskName = taskModel.TaskName;
         viewTask.Description = taskModel.Description;
         viewTask.Notes = taskModel.Notes;
-        viewTask.FinishDate = taskModel.FinishDate;
+        viewTask.FinishDate = taskModel.FinishDate.ToLocalTime();
         viewTask.Category = taskModel.Category.Id;
         viewTask.Status = taskModel.Status.Id;
 

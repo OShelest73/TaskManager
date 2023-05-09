@@ -133,6 +133,8 @@ namespace TaskManager.Migrations
 
                     b.HasIndex("CategoryId");
 
+                    b.HasIndex("TaskId");
+
                     b.ToTable("Users");
                 });
 
@@ -153,17 +155,17 @@ namespace TaskManager.Migrations
                     b.ToTable("Workspaces");
                 });
 
-            modelBuilder.Entity("TaskManager.Models.Workspace_User", b =>
+            modelBuilder.Entity("Workspaces_Users", b =>
                 {
+                    b.Property<string>("EmailAddresses")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("WorkspaceId")
                         .HasColumnType("int");
 
-                    b.Property<string>("EmailAddress")
-                        .HasColumnType("nvarchar(450)");
+                    b.HasKey("EmailAddresses", "WorkspaceId");
 
-                    b.HasKey("WorkspaceId", "EmailAddress");
-
-                    b.HasIndex("EmailAddress");
+                    b.HasIndex("WorkspaceId");
 
                     b.ToTable("Workspaces_Users");
                 });
@@ -171,7 +173,7 @@ namespace TaskManager.Migrations
             modelBuilder.Entity("TaskManager.Models.TaskModel", b =>
                 {
                     b.HasOne("TaskManager.Models.UserModel", "Author")
-                        .WithMany()
+                        .WithMany("Tasks")
                         .HasForeignKey("AuthorEmailAddress");
 
                     b.HasOne("TaskManager.Models.CategoryModel", "Category")
@@ -209,36 +211,38 @@ namespace TaskManager.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("TaskManager.Models.TaskModel", "Task")
+                        .WithMany("AppointedUsers")
+                        .HasForeignKey("TaskId");
+
                     b.Navigation("Category");
+
+                    b.Navigation("Task");
                 });
 
-            modelBuilder.Entity("TaskManager.Models.Workspace_User", b =>
+            modelBuilder.Entity("Workspaces_Users", b =>
                 {
-                    b.HasOne("TaskManager.Models.UserModel", "User")
-                        .WithMany("Workspaces_Users")
-                        .HasForeignKey("EmailAddress")
+                    b.HasOne("TaskManager.Models.UserModel", null)
+                        .WithMany()
+                        .HasForeignKey("EmailAddresses")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TaskManager.Models.WorkspaceModel", "Workspace")
-                        .WithMany("Workspaces_Users")
+                    b.HasOne("TaskManager.Models.WorkspaceModel", null)
+                        .WithMany()
                         .HasForeignKey("WorkspaceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
 
-                    b.Navigation("User");
-
-                    b.Navigation("Workspace");
+            modelBuilder.Entity("TaskManager.Models.TaskModel", b =>
+                {
+                    b.Navigation("AppointedUsers");
                 });
 
             modelBuilder.Entity("TaskManager.Models.UserModel", b =>
                 {
-                    b.Navigation("Workspaces_Users");
-                });
-
-            modelBuilder.Entity("TaskManager.Models.WorkspaceModel", b =>
-                {
-                    b.Navigation("Workspaces_Users");
+                    b.Navigation("Tasks");
                 });
 #pragma warning restore 612, 618
         }

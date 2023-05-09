@@ -37,12 +37,6 @@ public class UsersService : IUsersService
         return result;
     }
 
-    public async Task<IEnumerable<UserModel>> GetAppointedUsers(int taskId)
-    {
-        var result = await _dbContext.Users.Where(u => u.TaskId == taskId).ToListAsync();
-        return result;
-    }
-
     public async Task<IEnumerable<WorkspaceModel>> GetUsersWorkspaces(string userId)
     {
         var user = await _dbContext.Users.Include(u => u.Workspaces).FirstOrDefaultAsync(u => u.EmailAddress == userId);
@@ -75,16 +69,6 @@ public class UsersService : IUsersService
         {
             _dbContext.Remove(user);
             await _dbContext.SaveChangesAsync();
-        }
-    }
-    
-    public async Task DeleteTaskFromAppointedUsers(int taskId)
-    {
-        var users = await GetAppointedUsers(taskId);
-        foreach (var user in users)
-        {
-            user.TaskId = null;
-            await Update(user);
         }
     }
 
