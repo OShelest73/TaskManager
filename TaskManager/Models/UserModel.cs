@@ -17,4 +17,5 @@ public class UserModel
     public TaskModel Task { get; set; }
 
     public virtual List<TaskModel> Tasks { get; set;} = new();
+    public virtual List<NotificationModel> Notifications { get; set; } = new();
 }

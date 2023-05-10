@@ -22,6 +22,21 @@ namespace TaskManager.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("NotificationModelUserModel", b =>
+                {
+                    b.Property<int>("NotificationsId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ReceiversEmailAddress")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("NotificationsId", "ReceiversEmailAddress");
+
+                    b.HasIndex("ReceiversEmailAddress");
+
+                    b.ToTable("NotificationModelUserModel");
+                });
+
             modelBuilder.Entity("TaskManager.Models.CategoryModel", b =>
                 {
                     b.Property<int>("Id")
@@ -37,6 +52,37 @@ namespace TaskManager.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("TaskManager.Models.NotificationModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsChecked")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Sender")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("TaskManager.Models.StatusModel", b =>
@@ -168,6 +214,21 @@ namespace TaskManager.Migrations
                     b.HasIndex("WorkspaceId");
 
                     b.ToTable("Workspaces_Users");
+                });
+
+            modelBuilder.Entity("NotificationModelUserModel", b =>
+                {
+                    b.HasOne("TaskManager.Models.NotificationModel", null)
+                        .WithMany()
+                        .HasForeignKey("NotificationsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TaskManager.Models.UserModel", null)
+                        .WithMany()
+                        .HasForeignKey("ReceiversEmailAddress")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("TaskManager.Models.TaskModel", b =>

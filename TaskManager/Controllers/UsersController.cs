@@ -145,7 +145,7 @@ public class UsersController : Controller
 
     public async Task<IActionResult> Profile(string id)
     {
-        var user = await _usersService.GetByEmail(id);
+        var user = await _usersService.GetByEmailWithTask(id);
         var workspaces = await _usersService.GetUsersWorkspaces(id);
         ViewBag.Workspaces = workspaces;
         

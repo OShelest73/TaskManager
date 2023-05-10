@@ -21,5 +21,6 @@ public static class RegisterServices
         builder.Services.AddScoped<IWorkspacesService, WorkspaceService>();
         builder.Services.AddScoped<ITasksService, TasksService>();
         builder.Services.AddScoped<IStatusesService, StatusesService>();
+        builder.Services.AddScoped<INotificationsService, NotificationsService>();
     }
 }

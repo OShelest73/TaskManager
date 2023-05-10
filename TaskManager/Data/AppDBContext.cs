@@ -19,6 +19,9 @@ public class AppDBContext: DbContext
             .UsingEntity("Workspaces_Users",
                 l => l.HasOne(typeof(UserModel)).WithMany().HasForeignKey("EmailAddresses"),
                 r => r.HasOne(typeof(WorkspaceModel)).WithMany().HasForeignKey("WorkspaceId"));
+        modelBuilder.Entity<NotificationModel>()
+            .HasMany(e => e.Receivers)
+            .WithMany(e => e.Notifications);
         modelBuilder.Entity<UserModel>()
             .HasOne(e => e.Task)
             .WithMany(e => e.AppointedUsers)
@@ -33,5 +36,5 @@ public class AppDBContext: DbContext
     public DbSet<TaskModel> Tasks { get; set; }
     public DbSet<UserModel> Users { get; set; }
     public DbSet<WorkspaceModel> Workspaces { get; set; }
-
+    public DbSet<NotificationModel> Notifications { get; set; }
 }

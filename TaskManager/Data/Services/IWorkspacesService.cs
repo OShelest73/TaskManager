@@ -4,9 +4,9 @@ namespace TaskManager.Data.Services;
 
 public interface IWorkspacesService
 {
-    Task Add(WorkspaceModel workspace, UserModel user);
-    Task AddUserToWorkspace(WorkspaceModel workspace, UserModel user);
-    Task DeleteWorkspace(WorkspaceModel workspace);
+    Task Add(WorkspaceModel workspace, UserModel user, UserModel initiator);
+    Task AddUserToWorkspace(WorkspaceModel workspace, UserModel user, UserModel initiator);
+    Task DeleteWorkspace(WorkspaceModel workspace, UserModel initiator);
     Task<WorkspaceModel> FindWorkspace(int workspaceId);
     Task<IEnumerable<WorkspaceModel>> GetAllWorkspaces();
     Task<IEnumerable<UserModel>> GetInvitedUsers(int workspaceId);

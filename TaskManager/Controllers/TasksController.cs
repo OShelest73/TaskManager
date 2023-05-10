@@ -119,7 +119,9 @@ public class TasksController : Controller
     {
         int taskId = Convert.ToInt32(HttpContext.GetRouteValue("Id"));
 
-        await _tasksService.Delete(taskId);
+        var initiator = await _usersService.GetByEmail(User.Identity.Name);
+
+        await _tasksService.Delete(taskId, initiator);
         return RedirectToAction("Index");
     }
 
@@ -179,17 +181,20 @@ public class TasksController : Controller
 
         await ConvertFromViewModel(task, correctTask);
 
-        await _tasksService.Update(correctTask);
+        var initiator = await _usersService.GetByEmail(User.Identity.Name);
+
+        await _tasksService.Update(correctTask, initiator);
         return RedirectToAction("Details", new{id = id});
     }
 
+    [HttpGet]
     public async Task<IActionResult> AppointUsers(int id)
     {
         var task = await _tasksService.FindTaskWithUsers(id);
         AppointViewModel usersList = new();
         usersList.usersList = await _usersService.GetUsersToAppoint(task.Category, task.Workspace);
         IEnumerable<UserModel> appointedUsers = task.AppointedUsers;
-        if (appointedUsers == null)
+        if (appointedUsers == null || appointedUsers.Count() == 0)
         {
             usersList.allUsers = usersList.usersList;
         }
@@ -218,7 +223,8 @@ public class TasksController : Controller
             usersList.Add(user);
         }
 
-        await _tasksService.AppointUsers(id, usersList);
+        var initiator = await _usersService.GetByEmail(User.Identity.Name);
+        await _tasksService.AppointUsers(id, usersList, initiator);
 
         return RedirectToAction("Details", new { id = id });
     }

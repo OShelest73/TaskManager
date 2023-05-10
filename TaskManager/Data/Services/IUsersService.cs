@@ -16,4 +16,5 @@ public interface IUsersService
     Task<IEnumerable<WorkspaceModel>> GetUsersWorkspaces(string userId);
     Task DeleteUser(UserModel user);
     Task DeleteTaskFromUsers(int taskId);
+    Task<UserModel> GetByEmailWithTask(string emailAddress);
 }

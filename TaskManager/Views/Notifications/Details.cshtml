@@ -1,0 +1,23 @@
+﻿@model NotificationModel
+
+@{
+    ViewData["Title"] = "Подробности оповещения";
+}
+
+<div class="row justify-content-center detail-form">
+    <div class="col-xl-8 col-lg-10 form-layout">
+        <div class="row task-detail-row">
+            <div class="col-11 task-detail">
+                <div class="task-detail-text">
+                    <div>Время и дата создания: @Model.CreationDate.ToLocalTime().ToString("HH:mm dd.MM.yyyy")</div>
+                    <div class="fw-bold mb-2 task-detail-task">@Model.Title</div>
+                    <div class="mb-2 task-detail-author">Оповещение: @Model.Message</div>
+
+                    <div>
+                        <a class="btn btn-main text-uppercase" asp-action="Index">Вернуться ко всем оповещениям</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

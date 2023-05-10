@@ -45,7 +45,7 @@ public class WorkspacesController : Controller
         }
 
         var user = await _usersService.GetByEmail(User.Identity.Name);
-        await _workspacesService.Add(workspace, user);
+        await _workspacesService.Add(workspace, user, user);
 
         return RedirectToAction("Index");
     }
@@ -77,7 +77,8 @@ public class WorkspacesController : Controller
     {
         var workspaceObject = await _workspacesService.FindWorkspace(workspace);
         var user = await _usersService.GetByEmail(id);
-        await _workspacesService.AddUserToWorkspace(workspaceObject, user);
+        var initiator = await _usersService.GetByEmail(User.Identity.Name);
+        await _workspacesService.AddUserToWorkspace(workspaceObject, user, initiator);
 
         return RedirectToAction("InviteUsers");
     }
@@ -143,7 +144,9 @@ public class WorkspacesController : Controller
             await _usersService.DeleteTaskFromUsers(task.Id);
         }
 
-        await _workspacesService.DeleteWorkspace(workspace);
+        var initiator = await _usersService.GetByEmail(User.Identity.Name);
+
+        await _workspacesService.DeleteWorkspace(workspace, initiator);
 
         return RedirectToAction("Index");
     }

@@ -37,6 +37,12 @@ public class UsersService : IUsersService
         return result;
     }
 
+    public async Task<UserModel> GetByEmailWithTask(string emailAddress)
+    {
+        var result = await _dbContext.Users.Include(c => c.Category).Include(u => u.Task).ThenInclude(t => t.Author).FirstOrDefaultAsync(u => u.EmailAddress == emailAddress);
+        return result;
+    }
+
     public async Task<IEnumerable<WorkspaceModel>> GetUsersWorkspaces(string userId)
     {
         var user = await _dbContext.Users.Include(u => u.Workspaces).FirstOrDefaultAsync(u => u.EmailAddress == userId);

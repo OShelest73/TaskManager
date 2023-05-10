@@ -33,13 +33,13 @@
                             }
                         </div>
                         <div>Назначенное задание:</div>
-                        @if (ViewBag.Task != null)
+                        @if (Model.Task != null)
                         {
-                            <div>Creation date: @ViewBag.Task.CreatedDate.ToLocalTime().ToString("HH:mm dd.MM.yyyy")</div>
-                            <div>Finish date: @ViewBag.Task.FinishDate.ToLocalTime().ToString("HH:mm dd.MM.yyyy")</div>
-                            <div class="fw-bold mb-2 task-detail-task">Task: @ViewBag.Task.TaskName</div>
-                            <div class="mb-2 task-detail-author">Author: @ViewBag.Task.Author.FullName - @ViewBag.Task.Author.EmailAddress</div>
-                            <div class="mb-2">Description: @ViewBag.Task.Description</div>
+                            <div>Creation date: @Model.Task.CreatedDate.ToLocalTime().ToString("HH:mm dd.MM.yyyy")</div>
+                            <div>Finish date: @Model.Task.FinishDate.ToLocalTime().ToString("HH:mm dd.MM.yyyy")</div>
+                            <div class="fw-bold mb-2 task-detail-task">Task: @Model.Task.TaskName</div>
+                            <div class="mb-2 task-detail-author">Author: @Model.Task.Author.FullName - @Model.Task.Author.EmailAddress</div>
+                            <div class="mb-2">Description: @Model.Task.Description</div>
                         }
                         else
                         {

@@ -4,7 +4,7 @@
     ViewData["Title"] = "Appoint users";
 }
 
-@if(Model.allUsers != null)
+@if(Model.allUsers?.Count() > 0)
 {
     <form asp-action="AppointUsers">
         <div class="form-group">
