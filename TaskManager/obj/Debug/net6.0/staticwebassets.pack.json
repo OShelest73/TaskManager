@@ -1,10 +1,6 @@
 {
   "Files": [
     {
-      "Id": "D:\\c#_proj\\TaskManager\\TaskManager\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\TaskManager.bundle.scp.css",
-      "PackagePath": "staticwebassets\\TaskManager.bundle.scp.css"
-    },
-    {
       "Id": "D:\\c#_proj\\TaskManager\\TaskManager\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
       "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css"
     },

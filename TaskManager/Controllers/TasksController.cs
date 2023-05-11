@@ -34,9 +34,7 @@ public class TasksController : Controller
         var workspaceTasks = await _tasksService.GetWorkspaceTasks(workspace);
         var categories = await _categoriesService.GetAll();
         var statuses = await _statusesService.GetAll();
-        var user = await _usersService.GetByEmail(User.Identity.Name);
 
-        ViewBag.Role = user.Category.CategoryName;
         ViewBag.Categories = categories;
         ViewBag.Statuses = statuses;
 
@@ -63,14 +61,13 @@ public class TasksController : Controller
 
     public async Task<IActionResult> Details(int workspace, int id)
     {
-        var user = await _usersService.GetByEmail(User.Identity.Name);
         ViewBag.Workspace = workspace;
-        ViewBag.Role = user.Category.CategoryName;
         var task = await _tasksService.FindTaskWithUsers(id);
         ViewBag.AppointedUsers = task.AppointedUsers;
         return View(task);
     }
 
+    [Authorize(Roles = "Manager")]
     [HttpGet]
     public async Task<IActionResult> Create(int workspace)
     {
@@ -82,6 +79,7 @@ public class TasksController : Controller
         ViewBag.Statuses = selectStatuses;
         return View();
     }
+    [Authorize(Roles = "Manager")]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(TaskViewModel task)
@@ -118,6 +116,7 @@ public class TasksController : Controller
         return RedirectToAction("Index");
     }
 
+    [Authorize(Roles = "Manager")]
     public async Task<IActionResult> Delete()
     {
         int taskId = Convert.ToInt32(HttpContext.GetRouteValue("Id"));
@@ -128,6 +127,7 @@ public class TasksController : Controller
         return RedirectToAction("Index");
     }
 
+    [Authorize(Roles = "Manager")]
     public async Task<IActionResult> Edit(int? id)
     {
         if (id == null)
@@ -149,6 +149,7 @@ public class TasksController : Controller
         return View(viewTask);
     }
 
+    [Authorize(Roles = "Manager")]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int? id, TaskViewModel task)
@@ -190,6 +191,7 @@ public class TasksController : Controller
         return RedirectToAction("Details", new{id = id});
     }
 
+    [Authorize(Roles = "Manager")]
     [HttpGet]
     public async Task<IActionResult> AppointUsers(int id)
     {
@@ -214,6 +216,7 @@ public class TasksController : Controller
         return View(usersList);
     }
 
+    [Authorize(Roles = "Manager")]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> AppointUsers(int id, IEnumerable<string> selectList)

@@ -1,35 +1,32 @@
 ﻿@model IEnumerable<WorkspaceModel>
 
 @{
-    ViewData["Title"] = "Your workspaces";
+    ViewData["Title"] = "Ваши рабочие пространства";
 }
 
+<h1 class="page-heading text-uppercase mb-4">Рабочие пространства</h1>
+
 <div class="row">
-    <div class="col-md-8 offset-md-2">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>@Html.DisplayNameFor(model => model.WorkspaceName)</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td class="align-middle">
-                            @Html.DisplayFor(modelItem => item.WorkspaceName)
-                        </td>
-                        <td class="align-middle">
-                            <a class="btn btn-outline-primary" asp-controller="Tasks" asp-action="Index" asp-route-workspace="@item.Id">Open</a>
-                            <a class="btn btn-outline-danger" asp-action="DeleteConfirm" asp-route-id="@item.Id">Delete </a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+    @if (Model?.Count() > 0)
+    {
+        @foreach (var item in Model)
+        {
+            <div class="element-entry">
+                <div class="element-entry-text">
+                    @Html.DisplayFor(modelItem => item.WorkspaceName)
+                </div>
+                <div class="element-entry-actions">
+                    <a class="btn btn-outline-primary" asp-controller="Tasks" asp-action="Index" asp-route-workspace="@item.Id">Открыть</a>
+                    @if (User.IsInRole("Manager"))
+                    {
+                        <a class="btn btn-outline-danger" asp-action="DeleteConfirm" asp-route-id="@item.Id">Удалить</a>
+                    }
+                </div>
+            </div>
+        }
+    }
 </div>
 
 <div style="position: fixed; right: 30px; bottom: 30px;" class="text-white">
-    <a asp-action="Create" class="btn btn-success"><i class="bi bi-plus-circle"></i>Add new</a>
+    <a asp-action="Create" class="btn btn-main">Создать</a>
 </div>

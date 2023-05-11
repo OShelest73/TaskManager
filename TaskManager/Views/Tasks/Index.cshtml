@@ -6,46 +6,18 @@
 
 <div class="row">
     <div class="col-md-8 offset-md-2">
-        @if (Model?.Count() > 0)
-        {
-            <form class="form-check-inline my-2 my-lg-0" style="display: flex;">
-                <input name="searchString" type="text" class="form-control" placeholder="Найти по названию или описанию"/>
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="bi bi-search"></i></button>
-            </form>
-
-            <div class="col-md-4 col-xl-3">
-                <div class="categories">
-                    <span class="text-uppercase fw-bold">Category</span>
-
-                    @Html.ActionLink("Reset filter", "Index", new{statusId = TempData["sortStatus"]})
-                    
-                    @foreach (var category in ViewBag.Categories)
-                    {
-                        @Html.ActionLink($"{category.CategoryName}", "Index", new{categoryId = category.Id, statusId = TempData["sortStatus"]})
-                    }
-                </div>
-                <div class="statuses">
-                    <span class="text-uppercase fw-bold">Status</span>
-                    
-                    @Html.ActionLink("Reset filter", "Index", new{categoryId = TempData["sortCategory"]})
-
-                    @foreach (var status in ViewBag.Statuses)
-                    {
-                        @Html.ActionLink($"{status.StatusName}", "Index", new{statusId = status.Id, categoryId = TempData["sortCategory"]})
-                    }
-                </div>
-            </div>
-
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>@Html.DisplayNameFor(model => model.TaskName)</th>
-                        <th>@Html.DisplayNameFor(model => model.Status)</th>
-                        <th>@Html.DisplayNameFor(model => model.Category)</th>
-                        <th>@Html.DisplayNameFor(model => model.FinishDate)</th>
-                    </tr>
-                </thead>
-                <tbody>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Название</th>
+                    <th>Статус</th>
+                    <th>Категория</th>
+                    <th>Время/дата завершения</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model?.Count() > 0)
+                {
                     @foreach (var item in Model)
                     {
                         <tr>
@@ -59,22 +31,52 @@
                                 @Html.DisplayFor(modelItem => item.Category.CategoryName)
                             </td>
                             <td class="align-middle">
-                                <div>Finish time/date: @item.FinishDate.ToLocalTime().ToString("HH:mm\\/dd.MM")</div>
+                                <div>@item.FinishDate.ToLocalTime().ToString("HH:mm\\/dd.MM")</div>
                             </td>
                             <td class="align-middle">
                                 <a class="btn btn-outline-primary" asp-controller="Tasks" asp-action="Details" asp-route-id="@item.Id" asp-route-workspace="@ViewBag.Workspace"><i class="bi bi-pencil-square"></i>Details</a>
                             </td>
                         </tr>
                     }
-                </tbody>
-            </table>
-        }
-        else
-        {
-            <div>There are no tasks in this workspace</div>
-        }
+                }
+                else
+                {
+                    <tr>Задания не найдены</tr>
+                }
+            </tbody>
+        </table>
+        <div class="search">
+            <form class="col-md-4 col-xl-3 search-box">
+                <input name="searchString" type="text" class="form-control rounded-control" placeholder="Найти по названию или описанию"/>
+                <button class="btn btn-main search-btn" type="submit"><i class="bi bi-search"></i></button>
+            </form>
+
+            <div class="col-md-4 col-xl-3">
+                <div class="filters">
+                    <span class="text-uppercase fw-bold">Категории</span>
+                    
+                    <a asp-action="Index" asp-route-statusId="@TempData["sortStatus"]">Все</a>
+
+                    @foreach (var category in ViewBag.Categories)
+                    {
+                        <a asp-action="Index" asp-route-categoryId="@category.Id" asp-route-statusId="@TempData["sortStatus"]">@category.CategoryName</a>
+                    }
+                </div>
+                <div class="filters">
+                    <span class="text-uppercase fw-bold">Статусы</span>
+                    
+                    <a asp-action="Index" asp-route-categoryId="@TempData["sortCategory"]">Все</a>
+
+                    @foreach (var status in ViewBag.Statuses)
+                    {
+                        <a asp-action="Index" asp-route-statusId="@status.Id" asp-route-categoryId="@TempData["sortCategory"]">@status.StatusName</a>
+                    }
+                </div>
+            </div>
+        </div>
+        
     </div>
-    @if (ViewBag.Role == "Manager")
+    @if (User.IsInRole("Manager"))
     {
         <div>
             <a class="btn btn-outline-primary" asp-controller="Workspaces" asp-action="InviteUsers" asp-route-workspace="@ViewBag.Workspace">Add users to workspace</a>

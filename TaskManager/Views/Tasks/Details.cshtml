@@ -41,7 +41,7 @@
                             @Model.Notes
                         </div>
 
-                        @if (ViewBag.Role == "Manager")
+                        @if (User.IsInRole("Manager"))
                         {
                             <div>
                                 <a class="btn btn-main text-uppercase" asp-route-id="@Model.Id" asp-action="Delete">Delete task</a>

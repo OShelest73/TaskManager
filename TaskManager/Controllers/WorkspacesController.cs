@@ -30,12 +30,14 @@ public class WorkspacesController : Controller
         var workspaces = await _usersService.GetUsersWorkspaces(User.Identity.Name);
         return View(workspaces);
     }
-    
+
+    [Authorize(Roles = "Manager")]
     public async Task<IActionResult> Create()
     {
         return View();
     }
 
+    [Authorize(Roles = "Manager")]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(WorkspaceModel workspace)
@@ -51,6 +53,7 @@ public class WorkspacesController : Controller
         return RedirectToAction("Index");
     }
 
+    [Authorize(Roles = "Manager")]
     public async Task<IActionResult> InviteUsers(int workspace, int? categoryId, string searchString)
     {
         var invitedUsers = await _workspacesService.GetInvitedUsers(workspace);
@@ -74,6 +77,7 @@ public class WorkspacesController : Controller
         return View(usersToInvite);
     }
 
+    [Authorize(Roles = "Manager")]
     public async Task<IActionResult> InviteUser(int workspace, string id)
     {
         var workspaceObject = await _workspacesService.FindWorkspace(workspace);
@@ -84,6 +88,7 @@ public class WorkspacesController : Controller
         return RedirectToAction("InviteUsers");
     }
 
+    [Authorize(Roles = "Manager")]
     public async Task<IActionResult> RemoveUsers(int workspace, int? categoryId, string searchString)
     {
         var invitedUsers = await _workspacesService.GetInvitedUsers(workspace);
@@ -111,6 +116,7 @@ public class WorkspacesController : Controller
         return View(invitedUsers);
     }
 
+    [Authorize(Roles = "Manager")]
     public async Task<IActionResult> RemoveUser(int workspace, string id)
     {
         var workspaceObject = await _workspacesService.FindWorkspace(workspace);
@@ -128,12 +134,14 @@ public class WorkspacesController : Controller
         return RedirectToAction("RemoveUsers");
     }
 
+    [Authorize(Roles = "Manager")]
     public async Task<IActionResult> DeleteConfirm(int id)
     {
         var workspace = await _workspacesService.FindWorkspace(id);
         return View(workspace);
     }
 
+    [Authorize(Roles = "Manager")]
     public async Task<IActionResult> Delete(int id)
     {
         var workspace = await _workspacesService.FindWorkspace(id);

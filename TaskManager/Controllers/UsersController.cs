@@ -55,12 +55,14 @@ public class UsersController : Controller
         return View(model);
     }
 
+    [Authorize(Roles = "Manager")]
     public async Task<IActionResult> Index()
     {
         var allUsers = await _usersService.GetAll();
         return View(allUsers);
     }
 
+    [Authorize(Roles = "Manager")]
     [HttpGet]
     public async Task<IActionResult> Register() 
     {
@@ -70,6 +72,7 @@ public class UsersController : Controller
         return View();
     }
 
+    [Authorize(Roles = "Manager")]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Register(RegisterViewModel user)
@@ -94,6 +97,7 @@ public class UsersController : Controller
         return RedirectToAction("Index");
     }
 
+    [Authorize(Roles = "Manager")]
     [HttpGet]
     public async Task<IActionResult> Edit(string id)
     {
@@ -107,6 +111,7 @@ public class UsersController : Controller
         return View(viewUser);
     }
 
+    [Authorize(Roles = "Manager")]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(string id, UserViewModel user)
@@ -129,6 +134,7 @@ public class UsersController : Controller
         return RedirectToAction("Index");
     }
 
+    [Authorize(Roles = "Manager")]
     public async Task<IActionResult> Details(string id)
     {
         var userDetails = await _usersService.GetByEmail(id);
@@ -156,12 +162,14 @@ public class UsersController : Controller
         return View(user);
     }
 
+    [Authorize(Roles = "Manager")]
     public async Task<IActionResult> DeleteConfirm(string id)
     {
         var user = await _usersService.GetByEmail(id);
         return View(user);
     }
 
+    [Authorize(Roles = "Manager")]
     public async Task<IActionResult> Delete(string id)
     {
         var user = await _usersService.GetByEmail(id);

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "aXkK/DKsPrjMGtXkJ1AqceBFMqBFbVxDp2o+DlyBt4s=",
+  "Hash": "jB6bG/Gjvt4dfiaxtEx6Ow3I9i1ggzq+/+ikk9ShN7Y=",
   "Source": "TaskManager",
   "BasePath": "_content/TaskManager",
   "Mode": "Default",
@@ -16,40 +16,6 @@
     }
   ],
   "Assets": [
-    {
-      "Identity": "D:\\c#_proj\\TaskManager\\TaskManager\\obj\\Debug\\net6.0\\scopedcss\\bundle\\TaskManager.styles.css",
-      "SourceId": "TaskManager",
-      "SourceType": "Computed",
-      "ContentRoot": "D:\\c#_proj\\TaskManager\\TaskManager\\obj\\Debug\\net6.0\\scopedcss\\bundle\\",
-      "BasePath": "_content/TaskManager",
-      "RelativePath": "TaskManager.styles.css",
-      "AssetKind": "All",
-      "AssetMode": "CurrentProject",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "ScopedCss",
-      "AssetTraitValue": "ApplicationBundle",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "D:\\c#_proj\\TaskManager\\TaskManager\\obj\\Debug\\net6.0\\scopedcss\\bundle\\TaskManager.styles.css"
-    },
-    {
-      "Identity": "D:\\c#_proj\\TaskManager\\TaskManager\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\TaskManager.bundle.scp.css",
-      "SourceId": "TaskManager",
-      "SourceType": "Computed",
-      "ContentRoot": "D:\\c#_proj\\TaskManager\\TaskManager\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\",
-      "BasePath": "_content/TaskManager",
-      "RelativePath": "TaskManager.bundle.scp.css",
-      "AssetKind": "All",
-      "AssetMode": "Reference",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "ScopedCss",
-      "AssetTraitValue": "ProjectBundle",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "D:\\c#_proj\\TaskManager\\TaskManager\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\TaskManager.bundle.scp.css"
-    },
     {
       "Identity": "D:\\c#_proj\\TaskManager\\TaskManager\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
       "SourceId": "TaskManager",
