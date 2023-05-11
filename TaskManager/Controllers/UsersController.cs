@@ -14,6 +14,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace TaskManager.Controllers;
+
+[Authorize]
 public class UsersController : Controller
 {
     private readonly IUsersService _usersService;
@@ -27,12 +29,14 @@ public class UsersController : Controller
         _tasksService = tasksService;
     }
 
+    [AllowAnonymous]
     [HttpGet]
     public IActionResult LogIn()
     {
         return View();
     }
 
+    [AllowAnonymous]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> LogIn(LogInViewModel model)

@@ -8,6 +8,8 @@ using TaskManager.Models;
 using TaskManager.ViewModels;
 
 namespace TaskManager.Controllers;
+
+[Authorize]
 public class WorkspacesController : Controller
 {
     private readonly IWorkspacesService _workspacesService;
@@ -23,7 +25,6 @@ public class WorkspacesController : Controller
         _tasksService = tasksService;
     }
 
-    [Authorize]
     public async Task<IActionResult> Index()
     {
         var workspaces = await _usersService.GetUsersWorkspaces(User.Identity.Name);

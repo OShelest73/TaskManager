@@ -1,4 +1,5 @@
 ﻿using Azure.Core;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,8 @@ using TaskManager.Models;
 using TaskManager.ViewModels;
 
 namespace TaskManager.Controllers;
+
+[Authorize]
 public class TasksController : Controller
 {
     private readonly ITasksService _tasksService;
