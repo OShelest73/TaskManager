@@ -6,29 +6,29 @@ namespace TaskManager.ViewModels;
 
 public class RegisterViewModel
 {
-    [Display(Name = "Email Address")]
-    [Required(ErrorMessage = "Email address is required")]
-    [EmailAddress(ErrorMessage = "Please, enter correct email address")]
+    [Display(Name = "Email адрес")]
+    [Required(ErrorMessage = "Email адрес обязателен")]
+    [EmailAddress(ErrorMessage = "Пожалуйста, введите корректный Email адрес")]
     public string EmailAddress { get; set; }
 
-    [Display(Name = "Full Name")]
+    [Display(Name = "ФИО")]
     [Required(ErrorMessage = "Full name is required")]
-    [StringLength(50, MinimumLength = 3, ErrorMessage = "Full name must be between 3 and 50 characters")]
+    [StringLength(50, MinimumLength = 3, ErrorMessage = "ФИО должно иметь от 3 до 50 символов")]
     public string FullName { get; set; }
 
-    [Display(Name = "Password")]
+    [Display(Name = "Пароль")]
     [DataType(DataType.Password)]
-    [Required(ErrorMessage = "Password is required")]
-    [StringLength(50, MinimumLength = 6, ErrorMessage = "Password must be between 6 and 50 characters")]
+    [Required(ErrorMessage = "Пароль обязателен")]
+    [StringLength(50, MinimumLength = 6, ErrorMessage = "Пароль должен иметь от 6 до 50 символов")]
     public string Password { get; set; }
 
-    [Display(Name = "Confirm your password")]
+    [Display(Name = "Подтвердите пароль")]
     [DataType(DataType.Password)]
-    [Compare("Password", ErrorMessage = "Incorrect password")]
+    [Compare("Password", ErrorMessage = "Некорректный пароль")]
     public string ConfirmPassword { get; set; }
 
-    [Display(Name = "Category")]
-    [Required(ErrorMessage = "Category is required")]
+    [Display(Name = "Категория")]
+    [Required(ErrorMessage = "Категория обязательна")]
     public int? CategoryId { get; set; }
 
     public CategoryModel? Category { get; set; }

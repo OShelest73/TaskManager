@@ -8,12 +8,12 @@ public class UserViewModel
     [Key]
     public string EmailAddress { get; set; }
 
-    [Display(Name = "Full Name")]
-    [Required(ErrorMessage = "Full name is required")]
-    [StringLength(50, MinimumLength = 3, ErrorMessage = "Full name must be between 3 and 50 characters")]
+    [Display(Name = "ФИО")]
+    [Required(ErrorMessage = "ФИО обязательно")]
+    [StringLength(50, MinimumLength = 3, ErrorMessage = "Фио должно содержать от 3 до 50 символов")]
     public string FullName { get; set; }
 
-    [Display(Name = "Category")]
-    [Required(ErrorMessage = "Category is required")]
+    [Display(Name = "Категория")]
+    [Required(ErrorMessage = "Категория обязательна")]
     public int Category { get; set; }
 }

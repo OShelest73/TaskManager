@@ -4,13 +4,16 @@
     ViewData["Title"] = "Appoint users";
 }
 
+<h1 class="page-heading text-uppercase mb-4">Подходящие работники</h1>
+
 @if(Model.allUsers?.Count() > 0)
 {
     <form asp-action="AppointUsers">
-        <div class="form-group">
+        <div class="element-entry">
             @Html.ListBoxFor(m => m.selectList, ViewBag.UsersId as MultiSelectList)
         </div>
-        <input type="submit" value="Edit appointed users" class="btn btn-primary"/>
+        <button type="button" class="btn btn-primary" id="deselect">Убрать назначенных</button>
+        <input type="submit" value="Изменить назначенных" class="btn btn-primary"/>
     </form>
 }
 else

@@ -19,6 +19,9 @@ public class NotificationsController : Controller
     public async Task<IActionResult> Index()
     {
         var notifications = await _notificationService.GetNotifications(User.Identity.Name);
+
+        notifications = notifications.OrderByDescending(n => n.CreationDate);
+
         return View(notifications);
     }
 

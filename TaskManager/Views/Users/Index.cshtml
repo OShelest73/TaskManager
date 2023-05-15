@@ -1,45 +1,36 @@
 ﻿@model IEnumerable<UserModel>
 
 @{
-    ViewData["Title"] = "List of users";
+    ViewData["Title"] = "Список пользователей";
 }
 
+<h1 class="page-heading text-uppercase mb-4">Пользователи</h1>
+
 <div class="row">
-    <div class="col-md-8 offset-md-2">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>@Html.DisplayNameFor(model => model.EmailAddress)</th>
-                    <th>@Html.DisplayNameFor(model => model.FullName)</th>
-                    <th>@Html.DisplayNameFor(model => model.Category.CategoryName)</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td class="align-middle">
-                            @Html.DisplayFor(modelItem => item.EmailAddress)
-                        </td>
-                        <td class="align-middle">
-                            @Html.DisplayFor(modelItem => item.FullName)
-                        </td>
-                        <td class="align-middle">
-                            @Html.DisplayFor(modelItem => item.Category.CategoryName)
-                        </td>
-                        <td class="align-middle">
-                            <a class="btn btn-outline-info" asp-action="Details" asp-route-id="@item.EmailAddress">Details </a>
-                            <a class="btn btn-outline-info" asp-action="Edit" asp-route-id="@item.EmailAddress">Edit </a>
-                            <a class="btn btn-outline-danger" asp-action="DeleteConfirm" asp-route-id="@item.EmailAddress">Delete </a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+    @foreach (var item in Model)
+    {
+        <div class="element-entry">
+            <div class="element-entry-text">
+                <div class="task-text">
+                    @Html.DisplayFor(modelItem => item.EmailAddress)
+                </div>
+                <div class="user-info">
+                    @Html.DisplayFor(modelItem => item.FullName)
+                </div>
+                <div class=user-info>
+                    @Html.DisplayFor(modelItem => item.Category.CategoryName)
+                </div>
+            </div>
+
+            <div class="element-entry-actions align-middle">
+                <a class="btn btn-outline-primary" asp-action="Details" asp-route-id="@item.EmailAddress">Детали </a>
+                <a class="btn btn-outline-primary" asp-action="Edit" asp-route-id="@item.EmailAddress">Редактировать </a>
+                <a class="btn btn-outline-danger" asp-action="DeleteConfirm" asp-route-id="@item.EmailAddress">Удалить </a>
+            </div>
+        </div>
+    }
 </div>
 
 <div style="position: fixed; right: 30px; bottom: 30px;" class="text-white">
-    <a asp-controller="Users" asp-action="Register" class="btn btn-success"><i class="bi bi-plus-circle"></i>Add new</a>
+    <a asp-controller="Users" asp-action="Register" class="btn btn-main">Зарегистрировать</a>
 </div>

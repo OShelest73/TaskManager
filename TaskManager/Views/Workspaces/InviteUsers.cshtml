@@ -5,56 +5,57 @@
 }
 
 <div class="row">
-    <form class="form-check-inline my-2 my-lg-0" style="display: flex;">
-        <input name="searchString" type="text" class="form-control" placeholder="Найти по ФИО или Email адресу"/>
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="bi bi-search"></i></button>
-    </form>
-    <div class="categories">
-        <span class="text-uppercase fw-bold">Category</span>
 
-        @Html.ActionLink("Reset filter", "InviteUsers")
-                    
-        @foreach (var category in ViewBag.Categories)
+    <div class="task-content">
+
+        @if (Model?.Count() > 0)
         {
-            @Html.ActionLink($"{category.CategoryName}", "InviteUsers", new{categoryId = category.Id})
+            @foreach (var item in Model)
+            {
+                <div class="element-entry">
+                    <div class="element-entry-text">
+                        <div class="task-text">
+                            @Html.DisplayFor(modelItem => item.EmailAddress)
+                        </div>
+                        <div class="user-info">
+                            @Html.DisplayFor(modelItem => item.FullName)
+                        </div>
+                        <div class="user-info">
+                            @Html.DisplayFor(modelItem => item.Category.CategoryName)
+                        </div>
+                    </div>
+
+                    <div class="element-entry-actions">
+                        <div class="align-middle">
+                            <a class="btn btn-outline-primary" asp-action="InviteUser" asp-route-id="@item.EmailAddress">Пригласить</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div>Не найдено пользователей для приглашения</div>
         }
     </div>
-    @if (Model?.Count() > 0)
-    {
-        <div class="col-md-8 offset-md-2">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>@Html.DisplayNameFor(model => model.EmailAddress)</th>
-                        <th>@Html.DisplayNameFor(model => model.FullName)</th>
-                        <th>@Html.DisplayNameFor(model => model.Category.CategoryName)</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td class="align-middle">
-                                @Html.DisplayFor(modelItem => item.EmailAddress)
-                            </td>
-                            <td class="align-middle">
-                                @Html.DisplayFor(modelItem => item.FullName)
-                            </td>
-                            <td class="align-middle">
-                                @Html.DisplayFor(modelItem => item.Category.CategoryName)
-                            </td>
-                            <td class="align-middle">
-                                <a class="btn btn-outline-primary" asp-action="InviteUser" asp-route-id="@item.EmailAddress"><i class="bi bi-pencil-square"></i>Invite </a>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+
+    <div class="sidebar">
+        <form class="search-box">
+            <input name="searchString" type="text" class="form-control rounded-control" placeholder="Найти по ФИО или Email"/>
+            <button class="btn btn-main search-btn" type="submit"><i class="bi bi-search"></i></button>
+        </form>
+
+        <div>
+            <div class="filters">
+                <span class="text-uppercase fw-bold">Категории</span>
+                    
+                <a asp-action="RemoveUsers">Все</a>
+
+                @foreach (var category in ViewBag.Categories)
+                {
+                    <a asp-action="RemoveUsers" asp-route-categoryId="@category.Id">@category.CategoryName</a>
+                }
+            </div>
         </div>
-    }
-    else
-    {
-        <div>Нет подходящих пользователей</div>
-    }
+    </div>
 </div>

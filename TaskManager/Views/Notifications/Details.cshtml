@@ -4,6 +4,8 @@
     ViewData["Title"] = "Подробности оповещения";
 }
 
+<h1 class="page-heading text-uppercase mb-4">Оповещение</h1>
+
 <div class="row justify-content-center detail-form">
     <div class="col-xl-8 col-lg-10 form-layout">
         <div class="row task-detail-row">
@@ -14,7 +16,7 @@
                     <div class="mb-2 task-detail-author">Оповещение: @Model.Message</div>
 
                     <div>
-                        <a class="btn btn-main text-uppercase" asp-action="Index">Вернуться ко всем оповещениям</a>
+                        <a class="btn btn-outline-primary" asp-action="Index">Вернуться ко всем оповещениям</a>
                     </div>
                 </div>
             </div>

@@ -7,26 +7,26 @@ public class TaskViewModel
 {
     [Key]
     public int Id { get; set; }
-    [Display(Name = "Title of the task")]
-    [Required(ErrorMessage = "Title is required")]
+    [Display(Name = "Название")]
+    [Required(ErrorMessage = "Название обязательно")]
     public string TaskName { get; set; }
 
-    [Display(Name = "Description of the task")]
-    [Required(ErrorMessage = "Description is required")]
+    [Display(Name = "Описание")]
+    [Required(ErrorMessage = "Описание обязательно")]
     public string Description { get; set; }
 
-    [Display(Name = "Notes")]
+    [Display(Name = "Заметки")]
     public string? Notes { get; set; }
 
-    [Display(Name = "Deadline of this task")]
-    [Required(ErrorMessage = "Deadline is required")]
+    [Display(Name = "Дата завершения")]
+    [Required(ErrorMessage = "Дата завершения обязательна")]
     public DateTime FinishDate { get; set; }
 
-    [Display(Name = "Status of the task")]
-    [Required(ErrorMessage = "Status is required")]
+    [Display(Name = "Статус")]
+    [Required(ErrorMessage = "Статус обязателен")]
     public int Status { get; set; }
 
-    [Display(Name = "Category of the task")]
-    [Required(ErrorMessage = "Category is required")]
+    [Display(Name = "Категория")]
+    [Required(ErrorMessage = "Категория обязательна")]
     public int Category { get; set; }
 }

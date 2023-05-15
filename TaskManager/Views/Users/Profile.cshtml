@@ -4,6 +4,9 @@
     ViewData["Title"] = "Профиль";
 }
 
+
+<h1 class="page-heading text-uppercase mb-4">Профиль</h1>
+
 <div class="row justify-content-center detail-form">
     <div class="col-xl-8 col-lg-10 form-layout">
         @if (Model is not null && Model.EmailAddress == User.Identity.Name)
@@ -28,18 +31,20 @@
                             else
                             {
                                 <div>
-                                    No appointed users
+                                    Этот пользователь не состоит ни в одной рабочей области
                                 </div>
                             }
                         </div>
                         <div>Назначенное задание:</div>
                         @if (Model.Task != null)
                         {
-                            <div>Creation date: @Model.Task.CreatedDate.ToLocalTime().ToString("HH:mm dd.MM.yyyy")</div>
-                            <div>Finish date: @Model.Task.FinishDate.ToLocalTime().ToString("HH:mm dd.MM.yyyy")</div>
-                            <div class="fw-bold mb-2 task-detail-task">Task: @Model.Task.TaskName</div>
-                            <div class="mb-2 task-detail-author">Author: @Model.Task.Author.FullName - @Model.Task.Author.EmailAddress</div>
-                            <div class="mb-2">Description: @Model.Task.Description</div>
+                            <div class="fw-bold mb-2 task-detail-task">Задание: 
+                                <a asp-controller="Tasks" asp-action="Details" asp-route-id="@Model.Task.Id" asp-route-workspace="@Model.Task.Workspace.Id">@Model.Task.TaskName</a>
+                            </div>
+                            <div>Дата создания: @Model.Task.CreatedDate.ToLocalTime().ToString("HH:mm dd.MM.yyyy")</div>
+                            <div>Дата завершения: @Model.Task.FinishDate.ToLocalTime().ToString("HH:mm dd.MM.yyyy")</div>
+                            <div class="mb-2 task-detail-author">Автор: @Model.Task.Author.FullName - @Model.Task.Author.EmailAddress</div>
+                            <div class="mb-2">Описание: @Model.Task.Description</div>
                         }
                         else
                         {

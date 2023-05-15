@@ -4,24 +4,23 @@
     ViewData["Title"] = "Create workspace";
 }
 
+<h1 class="page-heading text-uppercase mb-4">Создать рабочее пространство</h1>
+
 <div class="row text">
     <div class="col-md-8 offset-2">
-        <p>
-            <h1>Add a new workspace</h1>
-        </p>
         <div class="row text">
             <div class="col-md-8 offset-2">
                 <form asp-action="Create">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                    <div class="form-group">
+                    <div class="form-group mb-2">
                         <label asp-for="WorkspaceName" class="control-label"></label>
                         <input asp-for="WorkspaceName" class="form-control"/>
                         <span asp-validation-for="WorkspaceName" class="text-danger"></span>
                     </div>                    
                     <div class="form-group">
-                        <input type="submit" asp-action="Create" value="Create" class="btn btn-outline-success float-right"/>
-                        <a class="btn btn-outline-secondary" asp-action="Index">Show all</a>
+                        <input type="submit" asp-action="Create" value="Создать" class="btn btn-main float-right"/>
+                        <a class="btn btn-main" asp-action="Index">Ваши рабочие пространства</a>
                     </div>
                 </form>
             </div>

@@ -1,8 +1,10 @@
 ﻿@model UserModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Подробно";
 }
+
+<h1 class="page-heading text-uppercase mb-4">Подробная информация</h1>
 
 <div class="row justify-content-center detail-form">
     <div class="col-xl-8 col-lg-10 form-layout">
@@ -11,23 +13,25 @@
             <div class="row task-detail-row">
                 <div class="col-11 task-detail">
                     <div class="task-detail-text">
-                        <div>Full name: @Model.FullName</div>
-                        <div>Email address: @Model.EmailAddress</div>
-                        <div class="fw-bold mb-2 task-detail-task">Category: @Model.Category.CategoryName</div>
+                        <div>ФИО: @Model.FullName</div>
+                        <div>Email адрес: @Model.EmailAddress</div>
+                        <div class="fw-bold mb-2 task-detail-task">Категория: @Model.Category.CategoryName</div>
 
                         @if (ViewBag.Task != null)
                         {
-                            <div>Creation date: @ViewBag.Task.CreatedDate.ToLocalTime().ToString("HH:mm dd.MM.yyyy")</div>
-                            <div>Finish date: @ViewBag.Task.FinishDate.ToLocalTime().ToString("HH:mm dd.MM.yyyy")</div>
-                            <div class="fw-bold mb-2 task-detail-task">Task: @ViewBag.Task.TaskName</div>
-                            <div class="mb-2 task-detail-author">Author: @ViewBag.Task.Author.FullName - @ViewBag.Task.Author.EmailAddress</div>
-                            <div class="mb-2">Description: @ViewBag.Task.Description</div>
+                            <div class="fw-bold mb-2 task-detail-task">Задание: 
+                                <a asp-controller="Tasks" asp-action="Details" asp-route-id="@ViewBag.Task.Id" asp-route-workspace="@ViewBag.Task.Workspace.Id">@ViewBag.Task.TaskName</a>
+                            </div>
+                            <div>Дата создания: @ViewBag.Task.CreatedDate.ToLocalTime().ToString("HH:mm dd.MM.yyyy")</div>
+                            <div>Дата завершения: @ViewBag.Task.FinishDate.ToLocalTime().ToString("HH:mm dd.MM.yyyy")</div>
+                            <div class="mb-2 task-detail-author">Автор: @ViewBag.Task.Author.FullName - @ViewBag.Task.Author.EmailAddress</div>
+                            <div class="mb-2">Описание: @ViewBag.Task.Description</div>
                         }
                         else
                         {
                             <div>У этого пользователя нет назначенных заданий</div>
                         }
-                        <a class="btn btn-main text-uppercase" asp-action="Index">Show all</a>
+                        <a class="btn btn-outline-primary" asp-action="Index">Все пользователи</a>
                     </div>
                 </div>
             </div>

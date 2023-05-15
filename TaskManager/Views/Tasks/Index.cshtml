@@ -1,91 +1,80 @@
 ﻿@model IEnumerable<TaskModel>
 
 @{
-    ViewData["Title"] = "Tasks";
+    ViewData["Title"] = "Задания";
 }
 
 <div class="row">
-    <div class="col-md-8 offset-md-2">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Название</th>
-                    <th>Статус</th>
-                    <th>Категория</th>
-                    <th>Время/дата завершения</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (Model?.Count() > 0)
-                {
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td class="align-middle">
-                                @Html.DisplayFor(modelItem => item.TaskName)
-                            </td>
-                            <td class="align-middle">
-                                @Html.DisplayFor(modelItem => item.Status.StatusName)
-                            </td>
-                            <td class="align-middle">
-                                @Html.DisplayFor(modelItem => item.Category.CategoryName)
-                            </td>
-                            <td class="align-middle">
-                                <div>@item.FinishDate.ToLocalTime().ToString("HH:mm\\/dd.MM")</div>
-                            </td>
-                            <td class="align-middle">
-                                <a class="btn btn-outline-primary" asp-controller="Tasks" asp-action="Details" asp-route-id="@item.Id" asp-route-workspace="@ViewBag.Workspace"><i class="bi bi-pencil-square"></i>Details</a>
-                            </td>
-                        </tr>
-                    }
-                }
-                else
-                {
-                    <tr>Задания не найдены</tr>
-                }
-            </tbody>
-        </table>
-        <div class="search">
-            <form class="col-md-4 col-xl-3 search-box">
-                <input name="searchString" type="text" class="form-control rounded-control" placeholder="Найти по названию или описанию"/>
-                <button class="btn btn-main search-btn" type="submit"><i class="bi bi-search"></i></button>
-            </form>
+    <div class="task-content">
 
-            <div class="col-md-4 col-xl-3">
-                <div class="filters">
-                    <span class="text-uppercase fw-bold">Категории</span>
-                    
-                    <a asp-action="Index" asp-route-statusId="@TempData["sortStatus"]">Все</a>
+        @if (Model?.Count() > 0)
+        {
+            @foreach (var item in Model)
+            {
+                <div class="element-entry">
+                    <div class="element-entry-text">
+                        <div class="task-text">
+                            @Html.DisplayFor(modelItem => item.TaskName)
+                        </div>
+                        <div class="task-info">
+                            @Html.DisplayFor(modelItem => item.Status.StatusName)
+                        </div>
+                        <div class="task-info">
+                            @Html.DisplayFor(modelItem => item.Category.CategoryName)
+                        </div>
+                        <div class="task-info">
+                            @item.FinishDate.ToLocalTime().ToString("HH:mm\\/dd.MM")
+                        </div>
+                    </div>
 
-                    @foreach (var category in ViewBag.Categories)
-                    {
-                        <a asp-action="Index" asp-route-categoryId="@category.Id" asp-route-statusId="@TempData["sortStatus"]">@category.CategoryName</a>
-                    }
+                    <div class="element-entry-actions align-middle">
+                        <a class="btn btn-outline-primary" asp-controller="Tasks" asp-action="Details" asp-route-id="@item.Id" asp-route-workspace="@ViewBag.Workspace">Детали</a>
+                    </div>
                 </div>
-                <div class="filters">
-                    <span class="text-uppercase fw-bold">Статусы</span>
-                    
-                    <a asp-action="Index" asp-route-categoryId="@TempData["sortCategory"]">Все</a>
+            }
+        }
+        else
+        {
+            <div>Задания не найдены</div>
+        }
+    </div>
 
-                    @foreach (var status in ViewBag.Statuses)
-                    {
-                        <a asp-action="Index" asp-route-statusId="@status.Id" asp-route-categoryId="@TempData["sortCategory"]">@status.StatusName</a>
-                    }
-                </div>
+    <div class="sidebar">
+        <form class="search-box">
+            <input name="searchString" type="text" class="form-control rounded-control" placeholder="Найти по названию или описанию"/>
+            <button class="btn btn-main search-btn" type="submit"><i class="bi bi-search"></i></button>
+        </form>
+
+        <div>
+            <div class="filters">
+                <span class="text-uppercase fw-bold">Категории</span>
+                    
+                <a asp-action="Index" asp-route-statusId="@TempData["sortStatus"]">Все</a>
+
+                @foreach (var category in ViewBag.Categories)
+                {
+                    <a asp-action="Index" asp-route-categoryId="@category.Id" asp-route-statusId="@TempData["sortStatus"]">@category.CategoryName</a>
+                }
+            </div>
+            <div class="filters">
+                <span class="text-uppercase fw-bold">Статусы</span>
+                    
+                <a asp-action="Index" asp-route-categoryId="@TempData["sortCategory"]">Все</a>
+
+                @foreach (var status in ViewBag.Statuses)
+                {
+                    <a asp-action="Index" asp-route-statusId="@status.Id" asp-route-categoryId="@TempData["sortCategory"]">@status.StatusName</a>
+                }
             </div>
         </div>
-        
-    </div>
-    @if (User.IsInRole("Manager"))
-    {
-        <div>
-            <a class="btn btn-outline-primary" asp-controller="Workspaces" asp-action="InviteUsers" asp-route-workspace="@ViewBag.Workspace">Add users to workspace</a>
-        </div>
-        <div>
-            <a class="btn btn-outline-primary" asp-controller="Workspaces" asp-action="RemoveUsers" asp-route-workspace="@ViewBag.Workspace">Remove users from workspace</a>
-        </div>
-    }
-    <div style="position: fixed; left: 30px; bottom: 50px;" class="text-white">
-        <a asp-controller="Tasks" asp-action="Create" asp-route-workspace="@ViewBag.Workspace">Add new</a>
-    </div>
+
+        @if (User.IsInRole("Manager"))
+        {
+            <div class="filters">
+                <a class="btn btn-outline-primary" asp-controller="Workspaces" asp-action="InviteUsers" asp-route-workspace="@ViewBag.Workspace">Пригласить пользователя</a>
+                <a class="btn btn-outline-primary" asp-controller="Workspaces" asp-action="RemoveUsers" asp-route-workspace="@ViewBag.Workspace">Убрать пользователя</a>
+                <a class="btn btn-outline-primary" asp-controller="Tasks" asp-action="Create" asp-route-workspace="@ViewBag.Workspace">Добавить задание</a>
+            </div>
+        }
+    </div>    
 </div>

@@ -27,6 +27,9 @@
     }
 </div>
 
-<div style="position: fixed; right: 30px; bottom: 30px;" class="text-white">
-    <a asp-action="Create" class="btn btn-main">Создать</a>
-</div>
+@if(User.IsInRole("Manager"))
+{
+    <div style="position: fixed; right: 30px; bottom: 30px;" class="text-white">
+        <a asp-action="Create" class="btn btn-main">Создать</a>
+    </div>
+}

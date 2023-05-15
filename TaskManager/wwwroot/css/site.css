@@ -145,6 +145,27 @@ a:hover, .btn-link:hover {
     justify-content: center;
 }
 
+select {
+    width: 100%;
+    overflow: hidden;
+    border: 0;
+}
+
+option {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-radius: 20px;
+    margin: 10px 0;
+    padding: 20px;
+    background-color: #FFFFFF;
+    box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
+}
+
+option[selected] {
+    background-color: #1b6ec2;
+}
+
 /*------------------------------   USERS/WORKSPACES   -------------------------------------*/
 .element-entry {
     display: flex;
@@ -166,14 +187,30 @@ a:hover, .btn-link:hover {
     justify-content: flex-end;
 }
 
-.element-entry-action{
-
+/*------------------------------   FILTERS   -------------------------------------*/
+.task-content {
+    width: 70%;
+    margin: 20px 0;
+    border-radius: 20px;
 }
 
-/*------------------------------   FILTERS   -------------------------------------*/
-.search{
+.task-text{
+    width: 40%;
+}
+
+.task-info{
+    width: 20%;
+}
+
+.user-info{
+    width: 30%;
+}
+
+.sidebar {
     display: flex;
     flex-direction: column;
+    width: 30%;
+    margin: 20px 0;
 }
 
 .search-box{
@@ -182,8 +219,7 @@ a:hover, .btn-link:hover {
 }
 
 .search-btn{
-    margin-left: 0;
-    width: 30px;
+    flex-grow: 1;
 }
 
 .filters {
