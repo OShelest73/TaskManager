@@ -135,18 +135,32 @@ public class TasksController : Controller
             return NotFound();
         }
 
-        var categories = await _categoriesService.GetAll();
-        SelectList selectCategories = new SelectList(categories, "Id", "CategoryName");
-        ViewBag.Categories = selectCategories;
-        var statuses = await _statusesService.GetAll();
-        SelectList selectStatuses = new SelectList(statuses, "Id", "StatusName");
-        ViewBag.Statuses = selectStatuses;
-
         var task = await _tasksService.FindTask(id.Value);
 
-        TaskViewModel viewTask = ConvertToViewModel(task);
+        if (task == null)
+        {
+            return NotFound();
+        }
 
-        return View(viewTask);
+        var categories = await _categoriesService.GetAll();
+        var statuses = await _statusesService.GetAll();
+
+        if (categories != null && statuses != null)
+        {
+            SelectList selectCategories = new SelectList(categories, "Id", "CategoryName");
+            ViewBag.Categories = selectCategories;
+
+            SelectList selectStatuses = new SelectList(statuses, "Id", "StatusName");
+            ViewBag.Statuses = selectStatuses;
+
+            TaskViewModel viewTask = ConvertToViewModel(task);
+
+            return View(viewTask);
+        }
+        else
+        {
+            return NotFound();
+        }        
     }
 
     [Authorize(Roles = "Manager")]

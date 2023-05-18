@@ -20,11 +20,6 @@ public class UsersService : IUsersService
         await _dbContext.SaveChangesAsync();
     }
 
-    public void Delete(int id)
-    {
-        throw new NotImplementedException();
-    }
-
     public async Task<IEnumerable<UserModel>> GetAll()
     {
         var result = await _dbContext.Users.Include(c => c.Category).ToListAsync();
