@@ -54,6 +54,11 @@ public class WorkspaceService : IWorkspacesService
 
     public async Task RemoveUser(WorkspaceModel workspace, UserModel user)
     {
+        if (user.Task != null)
+        {
+            user.Task = null;
+            await _dbContext.SaveChangesAsync();
+        }
         workspace.Users.Remove(user);
         await _dbContext.SaveChangesAsync();
     }

@@ -10,10 +10,12 @@ namespace TaskManager.Controllers;
 public class NotificationsController : Controller
 {
     private readonly INotificationsService _notificationService;
+    private readonly ITasksService _tasksService;
 
-    public NotificationsController(INotificationsService notificationService)
+    public NotificationsController(INotificationsService notificationService, ITasksService tasksService)
     {
         _notificationService = notificationService;
+        _tasksService = tasksService;
     }
 
     public async Task<IActionResult> Index()
@@ -37,5 +39,15 @@ public class NotificationsController : Controller
         await _notificationService.DeleteNotifications(User.Identity.Name);
 
         return RedirectToAction("Index");
+    }
+
+    public async Task<IActionResult> NotifyCompletion(int taskId)
+    {
+        var task = await _tasksService.FindTask(taskId);
+
+        await _notificationService.CreateNotification(User.Identity.Name, task.Author, 
+            "Завершение задания", $"Пользователь {User.Identity.Name} завершил задание {task.TaskName}. Для получения информации о задании зайдите в рабочее пространство {task.Workspace.WorkspaceName}");
+
+        return RedirectToAction("Profile", "Users", new { id = User.Identity.Name});
     }
 }

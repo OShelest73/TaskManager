@@ -45,6 +45,7 @@
                             <div>Дата завершения: @Model.Task.FinishDate.ToLocalTime().ToString("HH:mm dd.MM.yyyy")</div>
                             <div class="mb-2 task-detail-author">Автор: @Model.Task.Author.FullName - @Model.Task.Author.EmailAddress</div>
                             <div class="mb-2">Описание: @Model.Task.Description</div>
+                            <a class="btn btn-outline-primary" asp-controller="Notifications" asp-action="NotifyCompletion" asp-route-taskId=@Model.Task.Id>Оповестить о завершении</a>
                         }
                         else
                         {

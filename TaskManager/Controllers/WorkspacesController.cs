@@ -120,7 +120,7 @@ public class WorkspacesController : Controller
     public async Task<IActionResult> RemoveUser(int workspace, string id)
     {
         var workspaceObject = await _workspacesService.FindWorkspace(workspace);
-        var user = await _usersService.GetByEmail(id);
+        var user = await _usersService.GetByEmailWithTask(id);
         var currentUser = await _usersService.GetByEmail(User.Identity.Name);
         if (currentUser != user && user.Category.CategoryName == "Manager") 
         {
