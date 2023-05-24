@@ -48,7 +48,10 @@ public class TasksService : ITasksService
         _dbContext.Update(task);
         await _dbContext.SaveChangesAsync();
 
-        await _notificationsService.CreateNotification(initiator.EmailAddress, usersList,
+        List<UserModel> copyToNotify = new List<UserModel>();
+        copyToNotify.AddRange(usersList);
+
+        await _notificationsService.CreateNotification(initiator.EmailAddress, copyToNotify,
             $"Вам было назначено новое задание",
             $"Вам было назначено новое задание пользователем {initiator.FullName} (Email для связи - {initiator.EmailAddress}). Пожалуйста, проверьте свой профиль для получения дополнительной информации о задании");
     }
