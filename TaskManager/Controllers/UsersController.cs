@@ -77,6 +77,10 @@ public class UsersController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Register(RegisterViewModel user)
     {
+        if (_usersService.NotUnique(user.EmailAddress))
+        {
+            ModelState.AddModelError(string.Empty, "Некорректный адрес электронной почты");
+        }
         if (!ModelState.IsValid)
         {
             var categories = await _categoriesService.GetAll();

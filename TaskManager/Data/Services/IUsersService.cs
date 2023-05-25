@@ -16,4 +16,5 @@ public interface IUsersService
     Task DeleteUser(UserModel user);
     Task DeleteTaskFromUsers(int taskId);
     Task<UserModel> GetByEmailWithTask(string emailAddress);
+    bool NotUnique(string emailAddress);
 }

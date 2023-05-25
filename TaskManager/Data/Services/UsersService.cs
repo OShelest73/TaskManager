@@ -83,6 +83,12 @@ public class UsersService : IUsersService
         }
     }
 
+    public bool NotUnique(string emailAddress)
+    {
+        var result = _dbContext.Users.Any(u => u.EmailAddress == emailAddress);
+        return result;
+    }
+
     public async Task<UserModel> LogIn(string emailAddress, string password)
     {
         var result = await _dbContext.Users.Include(c => c.Category).FirstOrDefaultAsync(u => u.EmailAddress == emailAddress && u.Password == password);
